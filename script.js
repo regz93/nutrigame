@@ -1,46 +1,124 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
-    // 1. MOTS-CLÉS DE NUTRIMUSCLE
+    // 1. MOTS-CLÉS DE NUTRIMUSCLE & BASE DE DONNÉES
     // ----------------------------------------------------
     const WORD_LIST = [
-        // --- NUTRIMUSCLE & PRODUITS ---
-        "WHEY", "CASEINE", "CREATINE", "SHAKER", "PROTEINE", "MUSCLE", "ISOLAT", 
-        "HYDRO", "NUTRITION", "COMPLEMENT", "AMINOS", "PEPTIDE", "VITAMINE", "MINERAUX", 
-        "OATMEAL", "GAINER", "BARRE", "CONCENTRE", "PURETE", "QUALITE", "SERUM",
-        "GLUTAMINE", "BCAA", "CITRULINE", "ARGININE", "ELECTROLYTES", "OMEGA", "PURE", 
-        "NUTRIMUSCLE", // Mots plus longs possibles
-        "COLLAGENE", 
-    
+        // --- NUTRIMUSCLE & PRODUITS (AJOUTS ET ENRICHISSEMENT) ---
+       // --- PROTÉINES & FORMULES SPÉCIFIQUES ---
+    "WHEY",
+    "ISOLAT",
+    "CASEINE",
+    "HYDROLYSAT",
+    "PROTEINE",
+    "NATIVE",
+    "PROTIMUSCLE",
+    "MUSCLEWHEY",
+    "PURE MILK PROTEIN",
+    "DIET PROTEIN",
+    "EGG PROTEIN", // (Protéine d'œuf)
+    "PEPTOPRO", // (Hydrolysat de Caséine)
+    "DEEP RECOVERY",
+    "NIGHT RECOVERY",
+    "MUSCLEWHEGG",
+
+    // --- ACIDES AMINÉS & PERFORMANCES ---
+    "CREATINE",
+    "CREAPURE", // Marque de Créatine
+    "BCAA", // 2.1.2 et 4.1.1
+    "GLUTAMINE",
+    "CITRULLINE",
+    "ARGININE",
+    "BETA-ALANINE",
+    "CARNOSYN", // Marque de Bêta-Alanine
+    "GLYCINE",
+    "TAURINE",
+    "PREWORKOUT",
+    "INTRA-WORKOUT",
+    "PEPTIDE",
+
+    // --- COLLAGÈNES & ARTICULATIONS ---
+    "COLLAGENE",
+    "PEPTAN", // Marque de Collagène
+    "ARTIPRO",
+    "MARIN", // Collagène Marin
+
+    // --- NUTRITION & ÉNERGIE ---
+    "MALTODEXTRINE",
+    "DEXTROSE",
+    "WAXY MAIZE",
+    "CLUSTER DEXTRIN", // Glucide
+    "CREME DE RIZ",
+    "OATMEAL", // Flocons d'Avoine
+    "PANCAKES",
+    "BARRE",
+    "MUESLI",
+    "GAINER",
+    "LEAN GAINER",
+    "MUSCLEMASSE", // Hard Gainer
+    "PATATE DOUCE", // Farine
+
+    // --- VITAMINES, MINÉRAUX & SANTÉ ---
+    "VITAMINE",
+    "MINERAUX",
+    "OMEGA",
+    "MAGNESIUM",
+    "ZINC",
+    "FER",
+    "ZMB", // Zinc-Magnésium-B6
+    "QUALIC", // Marque Vitamine C
+    "QUALID", // Marque Vitamine D3
+    "EPAX", // Marque Oméga 3
+    "ULTIMINE", // Marque de Minéraux
+    "MULTIVITAMINES",
+
+    // --- PLANTES & ACTIFS SPÉCIFIQUES ---
+    "ASHWAGANDHA",
+    "SHODEN", // Marque Ashwagandha
+    "TRIBULUS",
+    "CAFEINE",
+    "GUARANA",
+    "CURCUMINE",
+    "CARNITINE",
+    "CARNIPURE", // Marque Carnitine
+    "FAT BURNER",
+    "CHOLINE",
+    "LACTIUM", // Complément Sommeil
+    "DÉTOX",
+    "BIO",
+
+    // --- ACCESSOIRES & MARQUE ---
+    "SHAKER",
+    "NUTRIMUSCLE", "REBORN",
         // --- MUSCULATION : Mouvements & Exercices ---
         "POMPE", "SQUAT", "TRACTION", "FENTES", "DIPS", "CURLS", "PRESSE", 
-        "ROWING", "DEVE", "GAINAGE", "EXTENSION", "FLEXION", "TIRAGE", "ELEVATION",
-        "POULET", // Clin d'œil à la diète
-        "ECHAUFFEMENT", "ETIREMENT", "REPETITION", "SERIE", "CHARGE", "INTENSITE",
-        "DEVELOPPE", "HALTERE", "BARRE", "KETTLEBELL", "MACHINE", "BANCS", 
-        "TERRE", // Soulevé de terre
-        "MILITAIRE", // Développé militaire
-        "MOLETS", "QUADRI", "ISCHIOS", "PEC", "DELTOIDE", "TRICEPS", "BICEPS", "ABDOS",
-        "TRAPÈZES", "DORSEAUX", "LOMBAIRES",
+        "ROWING", "DEVELOPPE", "GAINAGE", "EXTENSION", "FLEXION", "TIRAGE", "ELEVATION",
+        "POULET", "ECHAUFFEMENT", "ETIREMENT", "REPETITION", "SERIE", "CHARGE", "INTENSITE",
+        "HALTERE", "BARRE", "KETTLEBELL", "MACHINE", "BANCS", "TERRE", 
+        "MILITAIRE", "MOLETS", "QUADRI", "ISCHIOS", "PEC", "DELTOIDE", "TRICEPS", 
+        "BICEPS", "ABDOS", "TRAPEZES", "DORSEAUX", "LOMBAIRES",
     
         // --- MUSCULATION : Terminologie & Concepts ---
         "FORCE", "ENDURANCE", "VOLUME", "MASSE", "SECHE", "PRISE", "PERTE", 
         "RECUP", "RECUPERATION", "SURCHARGE", "PROGRESSION", "HYPERTROPHIE", 
-        "CALORIES", "MACROS", "MICRO", "FIBRES", "METABOLISME", "ANABOLIQUE", "CATABOLIQUE",
-        "GYMNASE", "SALLE", "TRAINING", "ENTRAINEMENT", "DIETE", "MACRONUTRIMENT",
-        "REPOS", "PRISES", // Prises alimentaires
-        "CARDIO", "PHYSIQUE", "MORPHOLOGIE", "ECTOMORPHE", "MESOMORPHE", "ENDOMORPHE",
-        "PERFORMER", "PERFORMANCE", "RESISTANCE",
+        "CALORIES", "MACROS", "MICRO", "FIBRES", "METABOLISME", "ANABOLIQUE", 
+        "CATABOLIQUE", "GYMNASE", "SALLE", "TRAINING", "ENTRAINEMENT", "DIETE", 
+        "MACRONUTRIMENT", "REPOS", "PRISES", "CARDIO", "PHYSIQUE", "MORPHOLOGIE", 
+        "ECTOMORPHE", "MESOMORPHE", "ENDOMORPHE", "PERFORMER", "PERFORMANCE", 
+        "RESISTANCE", "HYDRATATION",
     
         // --- NUTRI' EXPERTS & GUNDILL ---
-        "GUNDILL", "OLIVIER", "EXPERT", "AUTEUR", "LIVRE", "DOSSIER", "ANALYSE", 
+        "GUNDILL", "DELAVIER", "EXPERT", "AUTEUR", "LIVRE", "DOSSIER", "ANALYSE", 
         "CONSEIL", "SCIENCES", "RECHERCHE", "FORMATEUR", "CONFERENCE", "ARTICLE",
         "YOUTUBE", "CHAINE", "SPORT", "PRATIQUE", "THEORIE", "GUIDE", "REFERENCE",
-        "METHODE", "PROGRAMME", "EXPERIENCE", "KNOWLEDGE", // Connaissance
-        "BIOLOGIE", "PHYSIOLOGIE", "BIOCHIMIE", "ALIMENTS", "CONNAISSANCE"
+        "METHODE", "PROGRAMME", "EXPERIENCE", "KNOWLEDGE", "BIOLOGIE", "PHYSIOLOGIE", 
+        "BIOCHIMIE", "ALIMENTS", "CONNAISSANCE", "DEBATS"
     ];
 
+    // CRÉATION D'UN SET POUR UNE VÉRIFICATION D'EXISTENCE RAPIDE
+    const VALID_WORDS_SET = new Set(WORD_LIST); 
+
     // Paramètres du jeu
-    const MAX_TRIES = 6;   // Nombre d'essais
+    const MAX_TRIES = 6;
     
     let currentGuess = '';
     let currentRow = 0;
@@ -54,6 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
     /** Affiche un message temporaire à l'utilisateur */
     const showMessage = (message, duration = 1500) => {
         const msgContainer = document.getElementById('message-container');
+        if (!msgContainer) {
+            console.error("L'élément #message-container est manquant.");
+            return;
+        }
+
         const msgDiv = document.createElement('div');
         msgDiv.textContent = message;
         msgDiv.style.cssText = `
@@ -71,8 +154,20 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { msgDiv.style.opacity = '0'; }, duration);
         setTimeout(() => { msgContainer.removeChild(msgDiv); }, duration + 300);
     };
+    
+    /** Ajoute une animation de secousse à la ligne actuelle. */
+    const shakeRow = () => {
+        const row = document.getElementById('board').querySelector(`.row:nth-child(${currentRow + 1})`);
+        if (!row) return;
 
-    /** Choisit un mot aléatoire dans la liste. */
+        row.classList.add('shake'); // 'shake' doit être défini dans votre CSS
+        row.addEventListener('animationend', () => {
+            row.classList.remove('shake');
+        }, { once: true });
+    };
+
+
+    /** Choisit un mot aléatoire DANS LA LISTE. */
     const pickWord = () => {
         const randomIndex = Math.floor(Math.random() * WORD_LIST.length);
         return WORD_LIST[randomIndex].toUpperCase();
@@ -99,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const span = document.createElement('span');
                 tile.appendChild(span);
 
-                // --- MODIFICATION ICI : Activation uniquement pour la première ligne (i === 0) ---
                 if (i === 0 && j === 0) {
                     span.textContent = solution[0]; 
                     tile.classList.add('fixed');
@@ -113,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /** Construit le clavier virtuel (HTML). */
     const buildKeyboard = () => {
-        // (Clavier AZERTY standard français)
+        // (Le code du clavier reste inchangé)
         const keys = [
             'A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
             'Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M',
@@ -154,7 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const initGame = () => {
         document.getElementById('board').innerHTML = '';
         
-        solution = pickWord();
+        // S'assurer que le mot choisi est bien un mot de la liste
+        solution = pickWord(); 
         solutionLength = solution.length; 
         
         buildBoard();
@@ -176,8 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // La boucle commence à 0, mais on ignore l'index 0 (première case)
         for (let i = 0; i < solutionLength; i++) {
             const tile = row.querySelector(`.tile:nth-child(${i + 1})`);
-            
-            // Cibler le <span> à l'intérieur
             const span = tile.querySelector('span'); 
             
             if (i === 0) continue; // On ignore la première case (elle est fixe)
@@ -194,13 +287,28 @@ document.addEventListener('DOMContentLoaded', () => {
     /** Gère l'entrée (clavier physique ou virtuel). */
     const handleKeyInput = (key) => {
         key = key.toUpperCase();
-
+        
+        // --- VÉRIFICATION DU MOT LORS DE L'APPUI SUR ENTRÉE ---
         if (key === 'ENTRER' || key === 'ENTER') {
-            if (currentGuess.length === solutionLength) {
-                checkGuess();
-            } else {
+            const guess = currentGuess.toUpperCase();
+            
+            // 1. Vérification de la longueur
+            if (guess.length !== solutionLength) {
                 showMessage(`Le mot doit faire ${solutionLength} lettres !`);
+                shakeRow();
+                return;
             }
+            
+            // 2. VÉRIFICATION DE L'EXISTENCE DANS LA BASE DE MOTS
+            if (!VALID_WORDS_SET.has(guess)) {
+                showMessage(`Le mot "${guess}" n'existe pas selon Louan.`);
+                shakeRow();
+                return; // Arrête le processus
+            }
+
+            // Si le mot est valide et a la bonne longueur :
+            checkGuess();
+
         } else if (key === '⌫' || key === 'BACKSPACE') {
             if (currentGuess.length > 1) { // Empêche de supprimer la première lettre
                 currentGuess = currentGuess.slice(0, -1);
@@ -214,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    /** Vérifie le mot entré et applique les couleurs. */
+    /** Vérifie le mot entré et applique les couleurs. (Inchangée) */
     const checkGuess = () => {
         const guess = currentGuess;
         const solutionLetters = solution.split('');
@@ -279,17 +387,15 @@ document.addEventListener('DOMContentLoaded', () => {
             // Passe à l'essai suivant
             currentRow++;
             
-            // --- NOUVEAU : Afficher la lettre fixe sur la nouvelle ligne ---
+            // Afficher la lettre fixe sur la nouvelle ligne
             if (currentRow < MAX_TRIES) {
                 const nextTile = document.getElementById(`tile-${currentRow}-0`);
                 if (nextTile) {
                     const nextSpan = nextTile.querySelector('span');
-                    // On pourrait aussi le faire dans buildBoard, mais c'est plus propre ici
                     nextSpan.textContent = solution[0]; 
                     nextTile.classList.add('fixed');
                 }
             }
-            // -------------------------------------------------------------
             
             currentGuess = solution[0]; // Réinitialise l'essai avec la première lettre fixe
             updateBoard();
@@ -309,3 +415,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lancement du jeu
     initGame();
 });
+
+// REMARQUE: N'oubliez pas d'ajouter l'animation CSS pour .shake, par exemple:
+/*
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+.shake {
+  animation: shake 0.6s;
+}
+*/
