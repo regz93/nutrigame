@@ -27,9 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "PHYSIQUE", "PERFORMER", "RESISTANCE", "GUNDILL", "DELAVIER", "EXPERT", "AUTEUR",
         "LIVRE", "DOSSIER", "ANALYSE", "CONSEIL", "SCIENCES", "RECHERCHE", "FORMATEUR",
         "ARTICLE", "YOUTUBE", "CHAINE", "SPORT", "PRATIQUE", "THEORIE", "GUIDE", "REFERENCE",
-        "METHODE", "PROGRAMME", "EXPERIENCE", "KNOWLEDGE", "BIOLOGIE", "ALIMENTS", "LOUAN", "AUBANGE", "POSTWORKOUT",
-
-        "ABDUCTEUR",
+        "METHODE", "PROGRAMME", "EXPERIENCE", "KNOWLEDGE", "BIOLOGIE", "ALIMENTS", "LOUAN", "AUBANGE", "POSTWORKOUT", "ABDUCTEUR",
         "ADDUCTEUR",
         "SOULEVE",
         "DELTOIDE",
@@ -98,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "ENTRAINEUR",
         "CHAMPION",
         "MONDIAL",
-        "OLYMPIA"
+        "OLYMPIA", "MENTZER"
     ];
 
     const VALID_WORDS_SET = new Set(WORD_LIST);
