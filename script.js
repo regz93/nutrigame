@@ -10,24 +10,87 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. MOTS-CLÉS NUTRIMUSCLE
     // ----------------------------------------------------
     const WORD_LIST = [
-        "WHEY","ISOLAT","CASEINE","PROTEINE","NATIVE","PEPTOPRO","MUSCLEWHEGG",
-        "CREATINE","CREAPURE","BCAA","GLUTAMINE","CITRULLINE","ARGININE","GLYCINE",
-        "TAURINE","PREWORKOUT","PEPTIDE","COLLAGENE","PEPTAN","ARTIPRO","MARIN",
-        "DEXTROSE","PANCAKES","BARRE","MUESLI","GAINER","MUSCLEMASSE","VITAMINE",
-        "MINERAUX","OMEGA","MAGNESIUM","ZINC","FER","ZMB","QUALIC","QUALID","EPAX",
-        "ULTIMINE","TRIBULUS","CAFEINE","GUARANA","CURCUMINE","CARNITINE","CARNIPURE",
-        "CHOLINE","LACTIUM","DETOX","BIO","SHAKER","NUTRIMUSCLE","REBORN","POMPE",
-        "SQUAT","TRACTION","FENTES","DIPS","CURLS","PRESSE","ROWING","GAINAGE",
-        "EXTENSION","FLEXION","TIRAGE","ELEVATION","POULET","REPETITION","SERIE",
-        "CHARGE","INTENSITE","HALTERE","KETTLEBELL","MACHINE","BANCS","TERRE",
-        "MILITAIRE","MOLETS","QUADRI","ISCHIOS","PEC","TRICEPS","BICEPS","ABDOS",
-        "TRAPEZES","DORSEAUX","FORCE","ENDURANCE","VOLUME","MASSE","SECHE","PRISE",
-        "PERTE","RECUP","SURCHARGE","PROGRESSION","CALORIES","MACROS","MICRO",
-        "FIBRES","GYMNASE","SALLE","TRAINING","DIETE","REPOS","PRISES","CARDIO",
-        "PHYSIQUE","PERFORMER","RESISTANCE","GUNDILL","DELAVIER","EXPERT","AUTEUR",
-        "LIVRE","DOSSIER","ANALYSE","CONSEIL","SCIENCES","RECHERCHE","FORMATEUR",
-        "ARTICLE","YOUTUBE","CHAINE","SPORT","PRATIQUE","THEORIE","GUIDE","REFERENCE",
-        "METHODE","PROGRAMME","EXPERIENCE","KNOWLEDGE","BIOLOGIE","ALIMENTS"
+        // Mots de la liste précédente (maintenus)
+    "WHEY", "ISOLAT", "CASEINE", "PROTEINE", "NATIVE", "PEPTOPRO", "MUSCLEWHEGG",
+    "CREATINE", "CREAPURE", "BCAA", "GLUTAMINE", "CITRULLINE", "ARGININE", "GLYCINE",
+    "TAURINE", "PREWORKOUT", "PEPTIDE", "COLLAGENE", "PEPTAN", "ARTIPRO", "MARIN",
+    "DEXTROSE", "PANCAKES", "BARRE", "MUESLI", "GAINER", "MUSCLEMASSE", "VITAMINE",
+    "MINERAUX", "OMEGA", "MAGNESIUM", "ZINC", "FER", "ZMB", "QUALIC", "QUALID", "EPAX", "NATICOL",
+    "ULTIMINE", "TRIBULUS", "CAFEINE", "GUARANA", "CURCUMINE", "CARNITINE", "CARNIPURE",
+    "CHOLINE", "LACTIUM", "DETOX", "BIO", "SHAKER", "NUTRIMUSCLE", "REBORN", "POMPE",
+    "SQUAT", "TRACTION", "FENTES", "DIPS", "CURLS", "PRESSE", "ROWING", "GAINAGE",
+    "EXTENSION", "FLEXION", "TIRAGE", "ELEVATION", "POULET", "REPETITION", "SERIE",
+    "CHARGE", "INTENSITE", "HALTERE", "KETTLEBELL", "MACHINE", "BANCS", "TERRE",
+    "MILITAIRE", "MOLETS", "QUADRI", "ISCHIOS", "PEC", "TRICEPS", "BICEPS", "ABDOS",
+    "TRAPEZES", "DORSEAUX", "FORCE", "ENDURANCE", "VOLUME", "MASSE", "SECHE", "PRISE",
+    "PERTE", "RECUP", "SURCHARGE", "PROGRESSION", "CALORIES", "MACROS", "MICRO",
+    "FIBRES", "GYMNASE", "SALLE", "TRAINING", "DIETE", "REPOS", "PRISES", "CARDIO",
+    "PHYSIQUE", "PERFORMER", "RESISTANCE", "GUNDILL", "DELAVIER", "EXPERT", "AUTEUR",
+    "LIVRE", "DOSSIER", "ANALYSE", "CONSEIL", "SCIENCES", "RECHERCHE", "FORMATEUR",
+    "ARTICLE", "YOUTUBE", "CHAINE", "SPORT", "PRATIQUE", "THEORIE", "GUIDE", "REFERENCE",
+    "METHODE", "PROGRAMME", "EXPERIENCE", "KNOWLEDGE", "BIOLOGIE", "ALIMENTS", "LOUAN", "AUBANGE", "POSTWORKOUT",
+
+    // AJOUTS THÉMATIQUES (5 à 13 lettres, sans espace)
+    // Entraînement et Anatomie
+    "ABDUCTEUR",
+    "ADDUCTEUR",
+    "SOULEVE", // SOULEVE DE TERRE
+    "DELTOIDE",
+    "ISOMETRIE",
+    "CONCENTRIQUE",
+    "EXCENTRIQUE",
+    "PLIOMETRIE",
+    "MUSCULAR",
+    "FITNESS",
+    "CHRONO", // Chronobiologie
+    "ECHAUFFEMENT", // ÉCHAUFFEMENT
+    "MUSCULE",
+    "LIGAMENT",
+    "TENDON",
+    "ARTICULATION",
+    "PERFORMANCE",
+    "ENTRAINER", "ENTRAINEMENT", "GELULE",
+
+    // Nutrition et Compléments
+    "PROTEINEE", // BARRE PROTEINEE
+    "CREATININE",
+    "PHOSPHATE",
+    "CARBONE", // GLUCIDES
+    "LIPIDES", // GRAISSES
+    "GLUCIDES",
+    "SANTÉ",
+    "EQUILIBRE",
+    "CERTIFIE", // Produit certifié
+    "FLOCONS", // Flocons d'Avoine
+    "CRANBERRY", // Arôme ou ingrédient
+    "CACAHUETES", // Arôme ou ingrédient
+    "VANILLE",
+    "CHOCOLAT",
+    "FRAISE",
+    "BANANE",
+    "AROME",
+    "EDULCORANT",
+    "BIOTIQUE", // Probiotique / Prébiotique
+    "ENZYMES", // Enzymes digestives
+    "DIGESTION",
+    "ACIDE", // Acides Aminés
+    "FLACON", // Contenant
+
+    // Général, Qualité et Recherche
+    "QUALITE",
+    "PURETE",
+    "TRACE", // Traçabilité
+    "DIAGNOSTIC",
+    "FORMULE",
+    "VEGAN",
+    "CERTIF", // Certifié
+    "PROGRES", // Progression
+    "BOOSTER",
+    "ADAPTOGENE", // Plantes adaptogènes
+    "HYDRATER", // Hydratation
+    "RECUPERER", // Récupération
+    "COMPLEXE",
+    "SHODEN" // Ashwagandha Shoden
     ];
 
     const VALID_WORDS_SET = new Set(WORD_LIST);
@@ -38,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let solution = '';
     let solutionLength = 0;
     let todayKey = '';
+    let attempts = 0;
 
     const STORAGE_KEYS = {
         LAST_DATE: 'nm_word_game_last_date',
@@ -149,10 +213,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function saveWinnerToSupabase(dateKey, playerName) {
+    async function saveWinnerToSupabase(dateKey, playerName, attempts) {
         if (!SUPABASE_ANON_KEY) {
             console.warn('Supabase anon key manquante, gagnant non enregistré.');
-            return;
+            return null;
         }
 
         try {
@@ -162,24 +226,52 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json',
                     apikey: SUPABASE_ANON_KEY,
                     Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-                    Prefer: 'return=minimal'
+                    Prefer: 'return=representation'
                 },
-                body: JSON.stringify({ date: dateKey, name: playerName })
+                body: JSON.stringify({ date: dateKey, name: playerName, attempts })
             });
             if (!res.ok) {
                 console.error('Erreur Supabase insert', await res.text());
+                return null;
             }
+            const rows = await res.json();
+            return rows[0] || null;
         } catch (e) {
             console.error('Erreur réseau Supabase insert', e);
+            return null;
+        }
+    }
+
+    async function getRankForWinner(dateKey, winnerId) {
+        try {
+            const url =
+                `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}` +
+                `?date=eq.${encodeURIComponent(dateKey)}&select=id,created_at&order=created_at.asc`;
+
+            const res = await fetch(url, {
+                headers: {
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+                }
+            });
+
+            if (!res.ok) throw new Error('Erreur Supabase select (rank)');
+            const data = await res.json();
+
+            const index = data.findIndex(row => row.id === winnerId);
+            if (index === -1) return null;
+
+            return index + 1;
+        } catch (e) {
+            console.error('Erreur calcul rang :', e);
+            return null;
         }
     }
 
     // ----------------------------------------------------
     // 3bis. ÉCRAN DE FIN (victoire ou déjà joué) + FORMULAIRE NOM
     // ----------------------------------------------------
-    async function showEndScreen(dateKey, mode) {
-        // mode: "win" ou "already"
-
+    async function showEndScreen(dateKey, mode, attemptsForWin = null) {
         const boardEl = document.getElementById('board');
         const keyboardEl = document.getElementById('keyboard-container');
         if (boardEl) boardEl.style.display = 'none';
@@ -200,12 +292,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (mode === 'win') {
-                textP.textContent = "Bravo 🎉 Tu as trouvé le mot du jour !";
+                if (attemptsForWin != null) {
+                    textP.textContent = `Bravo 🎉 Tu as trouvé le mot du jour en ${attemptsForWin} essai(s) !`;
+                } else {
+                    textP.textContent = "Bravo 🎉 Tu as trouvé le mot du jour !";
+                }
             } else {
                 textP.textContent = "Tu as déjà joué aujourd'hui 👀 Reviens demain pour un nouveau NutriTest.";
             }
 
-            // Formulaire pour entrer le nom uniquement en cas de victoire
             let existingForm = document.getElementById('winner-form');
             if (mode === 'win' && !existingForm) {
                 const form = document.createElement('form');
@@ -220,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.id = 'winner-name-input';
-                input.placeholder = 'Ton prénom ou pseudo';
+                input.placeholder = 'Ton pseudo';
                 input.maxLength = 40;
                 input.style.padding = '6px 8px';
                 input.style.borderRadius = '4px';
@@ -250,14 +345,32 @@ document.addEventListener('DOMContentLoaded', () => {
                         input.focus();
                         return;
                     }
-                    await saveWinnerToSupabase(dateKey, name);
+
+                    const row = await saveWinnerToSupabase(dateKey, name, attemptsForWin);
+
+                    let rankText = '';
+                    if (row && row.id) {
+                        const rank = await getRankForWinner(dateKey, row.id);
+                        if (rank != null) {
+                            const suffix = (rank === 1) ? 'er' : 'e';
+                            rankText = ` Tu es le ${rank}${suffix} à avoir trouvé le mot aujourd'hui.`;
+                        }
+                    }
+
+                    if (attemptsForWin != null) {
+                        textP.textContent =
+                            `Bravo 🎉 Tu as trouvé le mot du jour en ${attemptsForWin} essai(s) !` +
+                            (rankText || '');
+                    } else {
+                        textP.textContent = "Bravo 🎉 Tu as trouvé le mot du jour !" + (rankText || '');
+                    }
+
                     form.remove();
                     await renderWinners(dateKey);
                 });
             }
         }
 
-        // (Ré)affiche le tableau des gagnants
         await renderWinners(dateKey);
     }
 
@@ -369,6 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
         todayKey = getTodayKey();
         solution = getDailyWord(todayKey);
         solutionLength = solution.length;
+        attempts = 0;
 
         buildBoard();
         buildKeyboard();
@@ -431,6 +545,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const checkGuess = () => {
+        attempts++;
+
         const guess = currentGuess;
         const solutionLetters = solution.split('');
         const guessLetters = guess.split('');
@@ -482,15 +598,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 4. Fin de partie
         if (guess === solution) {
-            showMessage('Bravo, tu fais partie des Nutri-Experts !', 1500);
+            showMessage('Bravo, tu fais partie des Nutri-Experts !', 1200);
             document.removeEventListener('keydown', handleKeydown);
 
             const today = getTodayKey();
             localStorage.setItem(STORAGE_KEYS.LAST_DATE, today);
             localStorage.setItem(STORAGE_KEYS.HAS_WON_PREFIX + today, 'true');
 
-            // On bascule sur l’écran de fin "win" avec formulaire inline
-            showEndScreen(today, 'win');
+            showEndScreen(today, 'win', attempts);
 
         } else if (currentRow >= MAX_TRIES - 1) {
             showMessage(`Dommage ! Le mot était : ${solution}`, 3000);
@@ -523,23 +638,36 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ----------------------------------------------------
-    // 6. UN MOT PAR JOUR : BLOCAGE SI DÉJÀ JOUÉ + GIF
+    // 6. START GAME / LIMITATION JOURNALIÈRE
     // ----------------------------------------------------
+    function startGame() {
+        const startScreen = document.getElementById('start-screen');
+        const gameContainer = document.getElementById('game-container');
+
+        if (startScreen) startScreen.style.display = 'none';
+        if (gameContainer) gameContainer.style.display = 'flex';
+
+        initGame();
+        document.addEventListener('keydown', handleKeydown);
+    }
+
     todayKey = getTodayKey();
-
-    // On peut afficher le classement dès le chargement
-    renderWinners(todayKey);
-
     const lastDatePlayed = localStorage.getItem(STORAGE_KEYS.LAST_DATE);
     const hasPlayedToday = lastDatePlayed === todayKey;
 
     if (hasPlayedToday) {
-        // déjà joué aujourd'hui → écran GIF + tableau
-        showEndScreen(todayKey, 'already');
-        return;
-    }
+        const startScreen = document.getElementById('start-screen');
+        const gameContainer = document.getElementById('game-container');
+        if (startScreen) startScreen.style.display = 'none';
+        if (gameContainer) gameContainer.style.display = 'flex';
 
-    // Lancement normal du jeu si pas encore joué
-    document.addEventListener('keydown', handleKeydown);
-    initGame();
+        showEndScreen(todayKey, 'already');
+    } else {
+        const startButton = document.getElementById('start-button');
+        if (startButton) {
+            startButton.addEventListener('click', () => {
+                startGame();
+            });
+        }
+    }
 });

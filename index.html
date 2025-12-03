@@ -11,19 +11,32 @@
         <h1>NUTRITEST</h1>
     </div>
 
-    <div id="game-container">
+    <!-- ÉCRAN D'ACCUEIL -->
+    <div id="start-screen">
+        <h2>Prêt pour le NutriTest ?</h2>
+        <p>
+            Un mot par jour, 6 essais pour prouver que vous êtes un vrai Nutri-Expert.<br>
+            Trouvez le mot du jour et entrez dans le classement.
+        </p>
+        <button id="start-button">Jouer</button>
+    </div>
+
+    <!-- CONTENEUR DU JEU (affiché seulement après clic sur "Jouer"
+         ou directement si l'utilisateur a déjà joué aujourd'hui) -->
+    <div id="game-container" style="display:none;">
         <!-- Grille de jeu -->
         <div id="board"></div>
         
+        <!-- Écran "déjà joué / victoire" avec GIF -->
         <div id="already-played" style="display:none;">
             <img src="mongif.webp" alt="Déjà joué" class="played-gif">
+            <!-- Le texte + formulaire nom seront injectés en JS ici -->
         </div>
-            
 
         <!-- Clavier virtuel -->
         <div id="keyboard-container"></div>
 
-        <!-- Classement du jour (rempli par le JS) -->
+        <!-- Classement du jour (rempli par le JS en fin de partie) -->
         <div id="winners-panel"></div>
     </div>
     
