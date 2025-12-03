@@ -148,6 +148,76 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentRow = 0;
     let solution = '';
     let solutionLength = 0;
+    let todayKey = '';
+
+    const STORAGE_KEYS = {
+        LAST_DATE: 'nm_word_game_last_date',
+        HAS_WON_PREFIX: 'nm_word_game_has_won_',
+        WINNERS_PREFIX: 'nm_word_game_winners_'
+    };
+
+    // ----------------------------------------------------
+    // 1bis. FONCTIONS JOURNALIÈRES (RESET À MINUIT)
+    // ----------------------------------------------------
+
+    /** Retourne la date du jour au format YYYY-MM-DD (timezone locale navigateur). */
+    const getTodayKey = () => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    /**
+     * Mot du jour déterministe en fonction de la date.
+     * Comme ça tout le monde a le même mot pour une date donnée,
+     * sans stockage serveur.
+     */
+    const getDailyWord = (dateKey) => {
+        let hash = 0;
+        for (let i = 0; i < dateKey.length; i++) {
+            hash = (hash + dateKey.charCodeAt(i)) % WORD_LIST.length;
+        }
+        return WORD_LIST[hash].toUpperCase();
+    };
+
+    /** Affiche / met à jour le panneau des gagnants du jour. */
+    const renderWinners = (dateKey) => {
+        let winners = [];
+        const raw = localStorage.getItem(STORAGE_KEYS.WINNERS_PREFIX + dateKey);
+        if (raw) {
+            try {
+                winners = JSON.parse(raw) || [];
+            } catch (e) {
+                console.error('Erreur parsing winners', e);
+            }
+        }
+
+        let panel = document.getElementById('winners-panel');
+        if (!panel) {
+            panel = document.createElement('div');
+            panel.id = 'winners-panel';
+            panel.style.cssText = `
+                margin-top: 16px;
+                font-family: sans-serif;
+                text-align: center;
+                font-size: 14px;
+            `;
+            const board = document.getElementById('board');
+            if (board && board.parentNode) {
+                board.parentNode.insertBefore(panel, board.nextSibling);
+            } else {
+                document.body.appendChild(panel);
+            }
+        }
+
+        if (!winners || winners.length === 0) {
+            panel.innerHTML = `<strong>Gagnants du jour :</strong> Personne n'a encore gagné aujourd'hui. Soyez le premier !`;
+        } else {
+            panel.innerHTML = `<strong>Gagnants du jour :</strong> ${winners.join(', ')}`;
+        }
+    };
 
     // ----------------------------------------------------
     // 2. INITIALISATION ET UI
@@ -190,13 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { once: true });
     };
 
-
-    /** Choisit un mot aléatoire DANS LA LISTE. */
-    const pickWord = () => {
-        const randomIndex = Math.floor(Math.random() * WORD_LIST.length);
-        return WORD_LIST[randomIndex].toUpperCase();
-    };
-
     /** Construit la grille de jeu (HTML) en fonction de la longueur du mot. */
     const buildBoard = () => {
         const board = document.getElementById('board');
@@ -231,7 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /** Construit le clavier virtuel (HTML). */
     const buildKeyboard = () => {
-        // (Le code du clavier reste inchangé)
         const keys = [
             'A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
             'Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M',
@@ -267,13 +329,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-
     /** Fonction de démarrage du jeu. */
     const initGame = () => {
         document.getElementById('board').innerHTML = '';
         
-        // S'assurer que le mot choisi est bien un mot de la liste
-        solution = pickWord(); 
+        // Mot du jour déterministe
+        todayKey = getTodayKey();
+        solution = getDailyWord(todayKey);
         solutionLength = solution.length; 
         
         buildBoard();
@@ -292,7 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const row = document.getElementById('board').querySelector(`.row:nth-child(${currentRow + 1})`);
         if (!row) return;
 
-        // La boucle commence à 0, mais on ignore l'index 0 (première case)
         for (let i = 0; i < solutionLength; i++) {
             const tile = row.querySelector(`.tile:nth-child(${i + 1})`);
             const span = tile.querySelector('span'); 
@@ -301,7 +362,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             span.textContent = currentGuess[i] || ''; 
             
-            // Met à jour la bordure uniquement si une lettre est tapée
             if (!tile.classList.contains('fixed')) {
                  tile.style.borderColor = currentGuess[i] ? 'var(--color-text)' : 'var(--color-tile-border)';
             }
@@ -312,29 +372,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleKeyInput = (key) => {
         key = key.toUpperCase();
         
-        // --- VÉRIFICATION DU MOT LORS DE L'APPUI SUR ENTRÉE ---
         if (key === 'ENTRER' || key === 'ENTER') {
             const guess = currentGuess.toUpperCase();
             
-            // 1. Vérification de la longueur
             if (guess.length !== solutionLength) {
                 showMessage(`Le mot doit faire ${solutionLength} lettres !`);
                 shakeRow();
                 return;
             }
             
-            // 2. VÉRIFICATION DE L'EXISTENCE DANS LA BASE DE MOTS
             if (!VALID_WORDS_SET.has(guess)) {
                 showMessage(`Le mot "${guess}" n'existe pas selon Louan.`);
                 shakeRow();
-                return; // Arrête le processus
+                return;
             }
 
-            // Si le mot est valide et a la bonne longueur :
             checkGuess();
 
         } else if (key === '⌫' || key === 'BACKSPACE') {
-            if (currentGuess.length > 1) { // Empêche de supprimer la première lettre
+            if (currentGuess.length > 1) { 
                 currentGuess = currentGuess.slice(0, -1);
                 updateBoard();
             }
@@ -346,22 +402,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    /** Vérifie le mot entré et applique les couleurs. (Inchangée) */
+    /** Vérifie le mot entré et applique les couleurs. */
     const checkGuess = () => {
         const guess = currentGuess;
         const solutionLetters = solution.split('');
         const guessLetters = guess.split('');
         
-        // 1. Initialisation de la carte des lettres (pour gérer les doublons)
         const solutionMap = {};
         solutionLetters.forEach(letter => {
             solutionMap[letter] = (solutionMap[letter] || 0) + 1;
         });
         
-        // Tableau pour stocker les classes finales à appliquer 
         const tileClasses = new Array(solutionLength).fill('absent');
 
-        // 2. Première passe : lettres CORRECTES (Bleu Vif)
         for (let i = 0; i < solutionLength; i++) {
             if (guessLetters[i] === solutionLetters[i]) {
                 tileClasses[i] = 'correct';
@@ -369,7 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // 3. Deuxième passe : lettres PRÉSENTES (Jaune d'Or) et ABSENTES (Gris Neutre)
         for (let i = 0; i < solutionLength; i++) {
             if (tileClasses[i] === 'correct') continue; 
             
@@ -377,41 +429,73 @@ document.addEventListener('DOMContentLoaded', () => {
                 tileClasses[i] = 'present';
                 solutionMap[guessLetters[i]]--;
             }
-            // Sinon, tileClasses[i] reste 'absent'
         }
 
-        // 4. Application des classes (Tuiles et Clavier)
         for (let i = 0; i < solutionLength; i++) {
             const tile = document.getElementById(`tile-${currentRow}-${i}`);
             const key = document.querySelector(`.key[data-key="${guessLetters[i]}"]`);
             
-            // Applique la classe à la tuile
             tile.classList.add(tileClasses[i]);
             
-            // Met à jour la touche du clavier
-            if (tileClasses[i] === 'correct') {
-                key.classList.remove('absent', 'present');
-                key.classList.add('correct');
-            } else if (tileClasses[i] === 'present' && !key.classList.contains('correct')) {
-                key.classList.remove('absent');
-                key.classList.add('present');
-            } else if (tileClasses[i] === 'absent' && !key.classList.contains('correct') && !key.classList.contains('present')) {
-                key.classList.add('absent');
+            if (key) {
+                if (tileClasses[i] === 'correct') {
+                    key.classList.remove('absent', 'present');
+                    key.classList.add('correct');
+                } else if (tileClasses[i] === 'present' && !key.classList.contains('correct')) {
+                    key.classList.remove('absent');
+                    key.classList.add('present');
+                } else if (tileClasses[i] === 'absent' && !key.classList.contains('correct') && !key.classList.contains('present')) {
+                    key.classList.add('absent');
+                }
             }
         }
 
-        // 5. Logique de fin de partie
         if (guess === solution) {
             showMessage('Bravo, tu fais partie des Nutri-Experts !', 3000);
             document.removeEventListener('keydown', handleKeydown);
+
+            try {
+                const today = getTodayKey();
+                localStorage.setItem(STORAGE_KEYS.LAST_DATE, today);
+                localStorage.setItem(STORAGE_KEYS.HAS_WON_PREFIX + today, 'true');
+
+                let winners = [];
+                const existing = localStorage.getItem(STORAGE_KEYS.WINNERS_PREFIX + today);
+                if (existing) {
+                    winners = JSON.parse(existing) || [];
+                }
+
+                let playerName = prompt("Entre ton prénom ou pseudo pour apparaître dans la liste des gagnants du jour :");
+                if (playerName) {
+                    playerName = playerName.trim();
+                    if (playerName.length > 0) {
+                        winners.push(playerName);
+                        localStorage.setItem(
+                            STORAGE_KEYS.WINNERS_PREFIX + today,
+                            JSON.stringify(winners)
+                        );
+                    }
+                }
+
+                renderWinners(today);
+            } catch (e) {
+                console.error('Erreur localStorage', e);
+            }
+
         } else if (currentRow >= MAX_TRIES - 1) {
             showMessage(`Dommage ! Le mot était : ${solution}`, 3000);
             document.removeEventListener('keydown', handleKeydown);
+
+            try {
+                const today = getTodayKey();
+                localStorage.setItem(STORAGE_KEYS.LAST_DATE, today);
+            } catch (e) {
+                console.error('Erreur localStorage', e);
+            }
+
         } else {
-            // Passe à l'essai suivant
             currentRow++;
             
-            // Afficher la lettre fixe sur la nouvelle ligne
             if (currentRow < MAX_TRIES) {
                 const nextTile = document.getElementById(`tile-${currentRow}-0`);
                 if (nextTile) {
@@ -421,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            currentGuess = solution[0]; // Réinitialise l'essai avec la première lettre fixe
+            currentGuess = solution[0]; 
             updateBoard();
         }
     };
@@ -433,10 +517,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Ajoute l'écouteur pour le clavier physique
-    document.addEventListener('keydown', handleKeydown);
+    // ----------------------------------------------------
+    // 4. GESTION "UN MOT PAR JOUR"
+    // ----------------------------------------------------
+    todayKey = getTodayKey();
 
-    // Lancement du jeu
+    // Toujours afficher les gagnants du jour
+    renderWinners(todayKey);
+
+    const lastDatePlayed = localStorage.getItem(STORAGE_KEYS.LAST_DATE);
+    const hasPlayedToday = lastDatePlayed === todayKey;
+    const hasWonToday = localStorage.getItem(STORAGE_KEYS.HAS_WON_PREFIX + todayKey) === 'true';
+
+    if (hasPlayedToday) {
+        if (hasWonToday) {
+            showMessage("Tu as déjà gagné aujourd'hui, reviens demain pour un nouveau mot !", 4000);
+        } else {
+            showMessage("Tu as déjà joué aujourd'hui, reviens demain pour un nouveau mot !", 4000);
+        }
+        // On ne lance pas le jeu, pas d'écouteur clavier
+        return;
+    }
+
+    // Lancement normal du jeu si pas encore joué aujourd'hui
+    document.addEventListener('keydown', handleKeydown);
     initGame();
 });
 
