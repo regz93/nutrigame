@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const SUPABASE_TABLE = 'nutri_wordle_winners';
 
     // ----------------------------------------------------
-    // 1. MOTS-CLÉS NUTRIMUSCLE
+    // 1. MOTS-CLÉS NUTRIMUSCLE (mots possibles comme solution)
     // ----------------------------------------------------
     const WORD_LIST = [
         "WHEY", "ISOLAT", "CASEINE", "PROTEINE", "NATIVE", "PEPTOPRO", "MUSCLEWHEGG",
@@ -99,7 +99,12 @@ document.addEventListener('DOMContentLoaded', () => {
         "OLYMPIA", "MENTZER"
     ];
 
+    // Set des SOLUTIONS (mot du jour) → reste uniquement WORD_LIST
+    // Set des MOTS VALIDES (solutions + lexique.json)
     const VALID_WORDS_SET = new Set(WORD_LIST);
+    const EXTRA_WORDS_SET = new Set(); // lexique.json
+    let lexiconLoaded = false;
+
     const MAX_TRIES = 6;
 
     let currentGuess = '';
@@ -116,6 +121,48 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ----------------------------------------------------
+    // 1 bis. CHARGEMENT DU LEXIQUE EXTERNE (lexique.json)
+    // ----------------------------------------------------
+    async function loadLexicon() {
+        try {
+            const res = await fetch('lexique.json');
+            if (!res.ok) {
+                console.warn('Impossible de charger lexique.json', res.status);
+                return;
+            }
+            const data = await res.json();
+
+            let words = [];
+            if (Array.isArray(data)) {
+                words = data;
+            } else if (Array.isArray(data.words)) {
+                words = data.words;
+            } else {
+                console.warn('Format inattendu pour lexique.json');
+                return;
+            }
+
+            words.forEach((w) => {
+                if (typeof w === 'string') {
+                    const upper = w.trim().toUpperCase();
+                    if (upper) {
+                        EXTRA_WORDS_SET.add(upper);
+                        VALID_WORDS_SET.add(upper); // utilisable pour vérifier si un mot existe
+                    }
+                }
+            });
+
+            lexiconLoaded = true;
+            console.log(`Lexique chargé : ${EXTRA_WORDS_SET.size} mots supplémentaires.`);
+        } catch (e) {
+            console.error('Erreur lors du chargement de lexique.json :', e);
+        }
+    }
+
+    // Appel du chargement du lexique (asynchrone, pas bloquant)
+    loadLexicon();
+
+    // ----------------------------------------------------
     // 2. UTILITAIRES DATE / MOT DU JOUR
     // ----------------------------------------------------
     const getTodayKey = () => {
@@ -127,11 +174,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const getDailyWord = (dateKey) => {
+        // Mot du jour choisi UNIQUEMENT dans WORD_LIST
         let hash = 0;
         for (let i = 0; i < dateKey.length; i++) {
             hash = (hash + dateKey.charCodeAt(i)) % WORD_LIST.length;
         }
         return WORD_LIST[hash].toUpperCase();
+    };
+
+    // ----------------------------------------------------
+    // 2 bis. VÉRIFICATION D'UN MOT (solutions + lexique)
+    // ----------------------------------------------------
+    const isValidWord = (word) => {
+        if (!word) return false;
+        const upper = word.toUpperCase();
+        if (VALID_WORDS_SET.has(upper)) return true;
+        if (EXTRA_WORDS_SET.has(upper)) return true;
+        return false;
     };
 
     // ----------------------------------------------------
@@ -221,22 +280,22 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             const rowsHtml = data.map((row, index) => {
-    const rank = index + 1;
+                const rank = index + 1;
 
-    // Si score null → recalcul
-    const displayScore =
-        (row.score != null)
-            ? row.score
-            : computeScore(row.attempts ?? 0, row.time_seconds ?? 0);
+                // Si score null → recalcul
+                const displayScore =
+                    (row.score != null)
+                        ? row.score
+                        : computeScore(row.attempts ?? 0, row.time_seconds ?? 0);
 
-    return `
+                return `
         <tr>
             <td style="padding:4px 6px; border-bottom:1px solid #444;">${rank}</td>
             <td style="padding:4px 6px; border-bottom:1px solid #444;">${row.name}</td>
             <td style="padding:4px 6px; border-bottom:1px solid #444;">${displayScore}</td>
         </tr>
     `;
-}).join('');
+            }).join('');
 
 
             panel.innerHTML = `
@@ -601,7 +660,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            if (!VALID_WORDS_SET.has(guess)) {
+            // 🔹 Vérification du mot dans WORD_LIST + lexique.json
+            if (!isValidWord(guess)) {
                 showMessage(`Le mot "${guess}" n'existe pas selon Louan.`);
                 shakeRow();
                 return;
