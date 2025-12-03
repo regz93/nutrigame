@@ -223,19 +223,23 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             const rowsHtml = data.map((row, index) => {
-                const rank = index + 1;
-                const timeStr = formatTime(row.time_seconds);
+    const rank = index + 1;
 
-                return `
-                    <tr>
-                        <td style="padding:4px 6px; border-bottom:1px solid #444;">${rank}</td>
-                        <td style="padding:4px 6px; border-bottom:1px solid #444;">${row.name}</td>
-                        <td style="padding:4px 6px; border-bottom:1px solid #444;">${row.attempts ?? '-'}</td>
-                        <td style="padding:4px 6px; border-bottom:1px solid #444;">${timeStr}</td>
-                        <td style="padding:4px 6px; border-bottom:1px solid #444;">${row.score ?? 0}</td>
-                    </tr>
-                `;
-            }).join('');
+    // Si score null → recalcul
+    const displayScore =
+        (row.score != null)
+            ? row.score
+            : computeScore(row.attempts ?? 0, row.time_seconds ?? 0);
+
+    return `
+        <tr>
+            <td style="padding:4px 6px; border-bottom:1px solid #444;">${rank}</td>
+            <td style="padding:4px 6px; border-bottom:1px solid #444;">${row.name}</td>
+            <td style="padding:4px 6px; border-bottom:1px solid #444;">${displayScore}</td>
+        </tr>
+    `;
+}).join('');
+
 
             panel.innerHTML = `
                 <div style="margin-top:8px; text-align:left;">
@@ -247,8 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             <tr>
                                 <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Rang</th>
                                 <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Joueur</th>
-                                <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Essais</th>
-                                <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Temps</th>
                                 <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Score</th>
                             </tr>
                         </thead>
