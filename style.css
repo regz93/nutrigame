@@ -9,17 +9,19 @@
 :root {
     /* Couleurs Nutrimuscle */
     --color-bg: #1D2A35; /* Fond sombre / Bleu-gris */
-    --color-text: #FFFFFF; /* Texte Blanc (pour le corps et les tuiles correctes) */
+    --color-text: #FFFFFF; /* Texte Blanc */
     --color-tile-border: #888; /* Bordure des cases (Gris clair) */
-    --color-bg-tile-default: #333333; /* Couleur de fond des tuiles non jouées (Gris foncé) */
-    
-    /* Couleurs de feedback (Indices) */
-    --color-correct: #0093E5; /* Bleu Vif Nutrimuscle (Bien placé) */
-    --color-present: #FFCC00; /* Jaune d'Or (Mauvais endroit) */
-    --color-absent: #777777; /* Gris Neutre (Non utilisé) */
+    --color-bg-tile-default: #333333; /* Fond des tuiles non jouées */
+
+    /* Couleurs de feedback (indices) */
+    --color-correct: #0093E5; /* Bleu vif Nutrimuscle (bien placé) */
+    --color-present: #FFCC00; /* Jaune d'or (mauvais endroit) */
+    --color-absent: #777777; /* Gris neutre (non utilisé) */
+
     --color-key-default: #4A4A4A; /* Touche clavier par défaut */
 }
 
+/* Reset & base */
 *,
 *::before,
 *::after {
@@ -31,11 +33,11 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    /* Utilise min-height pour que le centrage fonctionne même sans beaucoup de contenu */
-    min-height: 100vh; 
+    height: 100%;        /* prend toute la hauteur de l'écran */
+    overflow: hidden;    /* pas de scroll */
 }
 
-/* BODY = conteneur principal centré */
+/* BODY = conteneur global */
 body {
     background-color: var(--color-bg);
     color: var(--color-text);
@@ -43,16 +45,16 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* CLÉ : Centre l'ensemble du contenu (titre/grille/clavier) verticalement */
-    justify-content: center; 
+    justify-content: flex-start;
     padding: 10px;
-    overflow-x: hidden; 
+    overflow-x: hidden;
 }
 
-/* --- TITRE --- */
+/* --- HEADER / TITRE --- */
 .header {
     text-align: center;
     padding: 5px 0;
+    flex-shrink: 0;
 }
 
 .header h1 {
@@ -64,15 +66,31 @@ body {
     text-transform: uppercase;
 }
 
+/* --- CONTENEUR DU JEU (grille + clavier + classement) --- */
+#game-container {
+    flex: 1; /* occupe tout l'espace dispo entre header et bas de la fenêtre */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* garde les éléments dans l’ordre sans les pousser */
+    gap: 10px;                   /* espace propre entre board et clavier */
+        align-items: center;
+    width: 100%;
+    max-width: 650px;
+    max-height: calc(100vh - 70px); /* 70px ≈ hauteur du header + padding body */
+}
+
 /* --- GRILLE DE JEU (PLATEAU) --- */
 #board {
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 5px 0;
-    width: 100%;
-    max-width: 650px; 
+    width: 50%;
+    max-width: 650px;
     margin: 0 auto;
+
+    /* limite la hauteur de la grille pour laisser la place au clavier */
+    max-height: 50vh;
 }
 
 /* Chaque ligne de lettres */
@@ -81,26 +99,24 @@ body {
     gap: 8px;
     justify-content: center;
     width: 100%;
-    max-width: 550px; 
+    max-width: 550px;
     margin: 0 auto;
 }
 
 /* --- TILE / CASE --- */
 .tile {
-    /* Case parfaitement carrée, responsive */
     aspect-ratio: 1 / 1;
     width: 100%;
     
     border: 2px solid var(--color-tile-border);
-    background-color: var(--color-bg-tile-default); 
-    color: var(--color-text); 
+    background-color: var(--color-bg-tile-default);
+    color: var(--color-text);
     
-    /* Centrage parfait de la lettre */
     display: flex;
-    align-items: center; 
-    justify-content: center; 
+    align-items: center;
+    justify-content: center;
     
-    font-size: clamp(1.5rem, 4vw, 2.5rem); 
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 700;
     text-transform: uppercase;
     
@@ -109,11 +125,11 @@ body {
 
 /* Centrage du <span> à l’intérieur de la tuile */
 .tile span {
-    display: block; 
-    line-height: 1; /* CLÉ: Assure que la ligne est au milieu */
+    display: block;
+    line-height: 1;
 }
 
-/* Style de la première lettre fixe (Bleu Vif) */
+/* Première lettre fixe (toujours révélée) */
 .tile.fixed {
     background-color: var(--color-correct);
     color: var(--color-text);
@@ -130,7 +146,7 @@ body {
 
 .tile.present {
     background-color: var(--color-present);
-    color: var(--color-bg); 
+    color: var(--color-bg);
     border-color: var(--color-present);
 }
 
@@ -146,22 +162,24 @@ body {
   20%, 60% { transform: translateX(-5px); }
   40%, 80% { transform: translateX(5px); }
 }
-.row.shake {
+
+.row.shake,
+.shake {
   animation: shake 0.6s;
 }
 
-
 /* --- CLAVIER VIRTUEL --- */
 #keyboard-container {
-    margin-top: 15px;
+    margin-top: 10px;
     width: 100%;
-    max-width: 650px; 
+    max-width: 650px;
+    flex-shrink: 0; /* ne pas se faire écraser */
 }
 
 .keyboard-row {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     margin-bottom: 6px;
 }
 
@@ -199,24 +217,38 @@ body {
     opacity: 0.5;
 }
 
-/* Taille spécifique pour les touches Entrée et Retour Arrière */
+/* Taille spécifique pour Entrée et Retour arrière */
 .key.large {
     flex-grow: 1.5;
     padding: 10px 5px;
 }
 
-/* --- MESSAGE CONTAINER (POUR showMessage) --- */
+/* --- CLASSEMENT (GAGNANTS DU JOUR) --- */
+#winners-panel {
+    margin-top: 4px;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    text-align: center;
+    opacity: 0.9;
+}
+
+/* --- MESSAGE CONTAINER (pour showMessage) --- */
 #message-container {
-    position: fixed; 
-    top: 50px; 
+    position: fixed;
+    top: 50px;
     z-index: 2000;
-    pointer-events: none; 
+    pointer-events: none;
 }
 
 /* --- MEDIA QUERIES --- */
 @media (max-width: 650px) {
     body {
         padding: 8px;
+    }
+
+    #game-container {
+        max-width: 100vw;
+        max-height: calc(100vh - 60px);
     }
 
     #board {
@@ -230,7 +262,7 @@ body {
     }
 
     .tile {
-        font-size: clamp(1.4rem, 6vw, 2.2rem); 
+        font-size: clamp(1.4rem, 6vw, 2.2rem);
     }
 
     #keyboard-container {
@@ -244,3 +276,17 @@ body {
         font-size: clamp(0.7rem, 3.2vw, 0.85rem);
     }
 }
+#already-played {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.played-gif {
+    max-width: 90%;
+    max-height: 70vh;
+    object-fit: contain;
+}
+

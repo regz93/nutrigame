@@ -12,13 +12,23 @@
     </div>
 
     <div id="game-container">
+        <!-- Grille de jeu -->
         <div id="board"></div>
+        
+        <div id="already-played" style="display:none;">
+            <img src="mongif.webp" alt="Déjà joué" class="played-gif">
+        </div>
+            
+
+        <!-- Clavier virtuel -->
+        <div id="keyboard-container"></div>
+
+        <!-- Classement du jour (rempli par le JS) -->
+        <div id="winners-panel"></div>
     </div>
     
+    <!-- Messages flottants (showMessage) -->
     <div id="message-container"></div>
-
-    <div id="keyboard-container">
-        </div>
 
     <script src="script.js"></script>
 </body>
