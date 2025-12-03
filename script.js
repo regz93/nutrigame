@@ -10,87 +10,95 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. MOTS-CLÉS NUTRIMUSCLE
     // ----------------------------------------------------
     const WORD_LIST = [
-        // Mots de la liste précédente (maintenus)
-    "WHEY", "ISOLAT", "CASEINE", "PROTEINE", "NATIVE", "PEPTOPRO", "MUSCLEWHEGG",
-    "CREATINE", "CREAPURE", "BCAA", "GLUTAMINE", "CITRULLINE", "ARGININE", "GLYCINE",
-    "TAURINE", "PREWORKOUT", "PEPTIDE", "COLLAGENE", "PEPTAN", "ARTIPRO", "MARIN",
-    "DEXTROSE", "PANCAKES", "BARRE", "MUESLI", "GAINER", "MUSCLEMASSE", "VITAMINE",
-    "MINERAUX", "OMEGA", "MAGNESIUM", "ZINC", "FER", "ZMB", "QUALIC", "QUALID", "EPAX", "NATICOL",
-    "ULTIMINE", "TRIBULUS", "CAFEINE", "GUARANA", "CURCUMINE", "CARNITINE", "CARNIPURE",
-    "CHOLINE", "LACTIUM", "DETOX", "BIO", "SHAKER", "NUTRIMUSCLE", "REBORN", "POMPE",
-    "SQUAT", "TRACTION", "FENTES", "DIPS", "CURLS", "PRESSE", "ROWING", "GAINAGE",
-    "EXTENSION", "FLEXION", "TIRAGE", "ELEVATION", "POULET", "REPETITION", "SERIE",
-    "CHARGE", "INTENSITE", "HALTERE", "KETTLEBELL", "MACHINE", "BANCS", "TERRE",
-    "MILITAIRE", "MOLETS", "QUADRI", "ISCHIOS", "PEC", "TRICEPS", "BICEPS", "ABDOS",
-    "TRAPEZES", "DORSEAUX", "FORCE", "ENDURANCE", "VOLUME", "MASSE", "SECHE", "PRISE",
-    "PERTE", "RECUP", "SURCHARGE", "PROGRESSION", "CALORIES", "MACROS", "MICRO",
-    "FIBRES", "GYMNASE", "SALLE", "TRAINING", "DIETE", "REPOS", "PRISES", "CARDIO",
-    "PHYSIQUE", "PERFORMER", "RESISTANCE", "GUNDILL", "DELAVIER", "EXPERT", "AUTEUR",
-    "LIVRE", "DOSSIER", "ANALYSE", "CONSEIL", "SCIENCES", "RECHERCHE", "FORMATEUR",
-    "ARTICLE", "YOUTUBE", "CHAINE", "SPORT", "PRATIQUE", "THEORIE", "GUIDE", "REFERENCE",
-    "METHODE", "PROGRAMME", "EXPERIENCE", "KNOWLEDGE", "BIOLOGIE", "ALIMENTS", "LOUAN", "AUBANGE", "POSTWORKOUT",
+        "WHEY", "ISOLAT", "CASEINE", "PROTEINE", "NATIVE", "PEPTOPRO", "MUSCLEWHEGG",
+        "CREATINE", "CREAPURE", "BCAA", "GLUTAMINE", "CITRULLINE", "ARGININE", "GLYCINE",
+        "TAURINE", "PREWORKOUT", "PEPTIDE", "COLLAGENE", "PEPTAN", "ARTIPRO", "MARIN",
+        "DEXTROSE", "PANCAKES", "BARRE", "MUESLI", "GAINER", "MUSCLEMASSE", "VITAMINE",
+        "MINERAUX", "OMEGA", "MAGNESIUM", "ZINC", "FER", "ZMB", "QUALIC", "QUALID", "EPAX", "NATICOL",
+        "ULTIMINE", "TRIBULUS", "CAFEINE", "GUARANA", "CURCUMINE", "CARNITINE", "CARNIPURE",
+        "CHOLINE", "LACTIUM", "DETOX", "BIO", "SHAKER", "NUTRIMUSCLE", "REBORN", "POMPE",
+        "SQUAT", "TRACTION", "FENTES", "DIPS", "CURLS", "PRESSE", "ROWING", "GAINAGE",
+        "EXTENSION", "FLEXION", "TIRAGE", "ELEVATION", "POULET", "REPETITION", "SERIE",
+        "CHARGE", "INTENSITE", "HALTERE", "KETTLEBELL", "MACHINE", "BANCS", "TERRE",
+        "MILITAIRE", "MOLETS", "QUADRI", "ISCHIOS", "PEC", "TRICEPS", "BICEPS", "ABDOS",
+        "TRAPEZES", "DORSEAUX", "FORCE", "ENDURANCE", "VOLUME", "MASSE", "SECHE", "PRISE",
+        "PERTE", "RECUP", "SURCHARGE", "PROGRESSION", "CALORIES", "MACROS", "MICRO",
+        "FIBRES", "GYMNASE", "SALLE", "TRAINING", "DIETE", "REPOS", "PRISES", "CARDIO",
+        "PHYSIQUE", "PERFORMER", "RESISTANCE", "GUNDILL", "DELAVIER", "EXPERT", "AUTEUR",
+        "LIVRE", "DOSSIER", "ANALYSE", "CONSEIL", "SCIENCES", "RECHERCHE", "FORMATEUR",
+        "ARTICLE", "YOUTUBE", "CHAINE", "SPORT", "PRATIQUE", "THEORIE", "GUIDE", "REFERENCE",
+        "METHODE", "PROGRAMME", "EXPERIENCE", "KNOWLEDGE", "BIOLOGIE", "ALIMENTS", "LOUAN", "AUBANGE", "POSTWORKOUT",
 
-    // AJOUTS THÉMATIQUES (5 à 13 lettres, sans espace)
-    // Entraînement et Anatomie
-    "ABDUCTEUR",
-    "ADDUCTEUR",
-    "SOULEVE", // SOULEVE DE TERRE
-    "DELTOIDE",
-    "ISOMETRIE",
-    "CONCENTRIQUE",
-    "EXCENTRIQUE",
-    "PLIOMETRIE",
-    "MUSCULAR",
-    "FITNESS",
-    "CHRONO", // Chronobiologie
-    "ECHAUFFEMENT", // ÉCHAUFFEMENT
-    "MUSCULE",
-    "LIGAMENT",
-    "TENDON",
-    "ARTICULATION",
-    "PERFORMANCE",
-    "ENTRAINER", "ENTRAINEMENT", "GELULE",
+        "ABDUCTEUR",
+        "ADDUCTEUR",
+        "SOULEVE",
+        "DELTOIDE",
+        "ISOMETRIE",
+        "CONCENTRIQUE",
+        "EXCENTRIQUE",
+        "PLIOMETRIE",
+        "MUSCULAR",
+        "FITNESS",
+        "CHRONO",
+        "ECHAUFFEMENT",
+        "MUSCULE",
+        "LIGAMENT",
+        "TENDON",
+        "ARTICULATION",
+        "PERFORMANCE",
+        "ENTRAINER", "ENTRAINEMENT", "GELULE",
 
-    // Nutrition et Compléments
-    "PROTEINEE", // BARRE PROTEINEE
-    "CREATININE",
-    "PHOSPHATE",
-    "CARBONE", // GLUCIDES
-    "LIPIDES", // GRAISSES
-    "GLUCIDES",
-    "SANTÉ",
-    "EQUILIBRE",
-    "CERTIFIE", // Produit certifié
-    "FLOCONS", // Flocons d'Avoine
-    "CRANBERRY", // Arôme ou ingrédient
-    "CACAHUETES", // Arôme ou ingrédient
-    "VANILLE",
-    "CHOCOLAT",
-    "FRAISE",
-    "BANANE",
-    "AROME",
-    "EDULCORANT",
-    "BIOTIQUE", // Probiotique / Prébiotique
-    "ENZYMES", // Enzymes digestives
-    "DIGESTION",
-    "ACIDE", // Acides Aminés
-    "FLACON", // Contenant
-
-    // Général, Qualité et Recherche
-    "QUALITE",
-    "PURETE",
-    "TRACE", // Traçabilité
-    "DIAGNOSTIC",
-    "FORMULE",
-    "VEGAN",
-    "CERTIF", // Certifié
-    "PROGRES", // Progression
-    "BOOSTER",
-    "ADAPTOGENE", // Plantes adaptogènes
-    "HYDRATER", // Hydratation
-    "RECUPERER", // Récupération
-    "COMPLEXE",
-    "SHODEN" // Ashwagandha Shoden
+        "PROTEINEE",
+        "CREATININE",
+        "PHOSPHATE",
+        "CARBONE",
+        "LIPIDES",
+        "GLUCIDES",
+        "SANTÉ",
+        "EQUILIBRE",
+        "CERTIFIE",
+        "FLOCONS",
+        "CRANBERRY",
+        "CACAHUETES",
+        "VANILLE",
+        "CHOCOLAT",
+        "FRAISE",
+        "BANANE",
+        "AROME",
+        "EDULCORANT",
+        "BIOTIQUE",
+        "ENZYMES",
+        "DIGESTION",
+        "ACIDE",
+        "FLACON",
+        "QUALITE",
+        "PURETE",
+        "TRACE",
+        "DIAGNOSTIC",
+        "FORMULE",
+        "VEGAN",
+        "CERTIF",
+        "PROGRES",
+        "BOOSTER",
+        "ADAPTOGENE",
+        "HYDRATER",
+        "RECUPERER",
+        "COMPLEXE",
+        "SHODEN", "ARNOLD",
+        "COLEMAN",
+        "YATES",
+        "ZANE",
+        "HANEY",
+        "STRONGMAN",
+        "BODYBUILDER",
+        "FITGIRL",
+        "INFLUENCEUR",
+        "POWERLIFTING",
+        "CULTURISTE",
+        "ENTRAINEUR",
+        "CHAMPION",
+        "MONDIAL",
+        "OLYMPIA"
     ];
 
     const VALID_WORDS_SET = new Set(WORD_LIST);
@@ -102,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let solutionLength = 0;
     let todayKey = '';
     let attempts = 0;
+    let gameStartTime = null;
 
     const STORAGE_KEYS = {
         LAST_DATE: 'nm_word_game_last_date',
@@ -128,6 +137,34 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ----------------------------------------------------
+    // SCORE (0 → 1000) EN FONCTION ESSAIS + TEMPS
+    // ----------------------------------------------------
+    function computeScore(attempts, timeSeconds) {
+        if (attempts == null || !Number.isFinite(attempts)) return 0;
+        if (timeSeconds == null || !Number.isFinite(timeSeconds)) return 0;
+
+        if (attempts < 1) attempts = 1;
+        if (timeSeconds < 0) timeSeconds = 0;
+
+        // Cas parfait
+        if (attempts === 1 && timeSeconds <= 5) return 1000;
+
+        const MAX_TRIES_LOCAL = MAX_TRIES; // 6
+        const MAX_TIME = 300; // 5 minutes plafond
+
+        const attemptsScore = (MAX_TRIES_LOCAL - attempts + 1) / MAX_TRIES_LOCAL;
+        const cappedTime = Math.min(timeSeconds, MAX_TIME + 5);
+        const timeScore = Math.max(0, (MAX_TIME - (cappedTime - 5)) / MAX_TIME);
+
+        let score = 1000 * attemptsScore * timeScore;
+
+        if (score < 0) score = 0;
+        if (score > 1000) score = 1000;
+
+        return Math.round(score);
+    }
+
+    // ----------------------------------------------------
     // 3. SUPABASE : CLASSEMENT GLOBAL
     // ----------------------------------------------------
     async function renderWinners(dateKey) {
@@ -150,17 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        panel.innerHTML = `<strong>Gagnants du jour :</strong> Chargement...`;
+        panel.innerHTML = `<strong>Classement du jour :</strong> Chargement...`;
 
         if (!SUPABASE_ANON_KEY) {
-            panel.innerHTML = `<strong>Gagnants du jour :</strong> (clé Supabase manquante)`;
+            panel.innerHTML = `<strong>Classement du jour :</strong> (clé Supabase manquante)`;
             return;
         }
 
         try {
             const url =
                 `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}` +
-                `?date=eq.${encodeURIComponent(dateKey)}&select=name,created_at&order=created_at.asc`;
+                `?date=eq.${encodeURIComponent(dateKey)}&select=name,attempts,time_seconds,score,created_at&order=score.desc,attempts.asc,time_seconds.asc,created_at.asc`;
 
             const res = await fetch(url, {
                 headers: {
@@ -173,18 +210,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
 
             if (!data || data.length === 0) {
-                panel.innerHTML = `<strong>Gagnants du jour :</strong> Personne n'a encore gagné aujourd'hui. Soyez le premier !`;
+                panel.innerHTML = `<strong>Classement du jour :</strong> Personne n'a encore gagné aujourd'hui. Soyez le premier !`;
                 return;
             }
 
-            const rowsHtml = data.map(row => {
-                const dt = new Date(row.created_at);
-                const hh = String(dt.getHours()).padStart(2, '0');
-                const mm = String(dt.getMinutes()).padStart(2, '0');
+            const formatTime = (sec) => {
+                if (sec == null || isNaN(sec)) return '-';
+                sec = Math.floor(sec);
+                const m = Math.floor(sec / 60);
+                const s = sec % 60;
+                return m > 0 ? `${m}m${String(s).padStart(2, '0')}s` : `${s}s`;
+            };
+
+            const rowsHtml = data.map((row, index) => {
+                const rank = index + 1;
+                const timeStr = formatTime(row.time_seconds);
+
                 return `
                     <tr>
+                        <td style="padding:4px 6px; border-bottom:1px solid #444;">${rank}</td>
                         <td style="padding:4px 6px; border-bottom:1px solid #444;">${row.name}</td>
-                        <td style="padding:4px 6px; border-bottom:1px solid #444;">${hh}h${mm}</td>
+                        <td style="padding:4px 6px; border-bottom:1px solid #444;">${row.attempts ?? '-'}</td>
+                        <td style="padding:4px 6px; border-bottom:1px solid #444;">${timeStr}</td>
+                        <td style="padding:4px 6px; border-bottom:1px solid #444;">${row.score ?? 0}</td>
                     </tr>
                 `;
             }).join('');
@@ -192,13 +240,16 @@ document.addEventListener('DOMContentLoaded', () => {
             panel.innerHTML = `
                 <div style="margin-top:8px; text-align:left;">
                     <div style="margin-bottom:4px; font-weight:bold; text-align:center;">
-                        Gagnants du jour
+                        Classement du jour
                     </div>
                     <table style="width:100%; border-collapse:collapse; font-size:0.8rem;">
                         <thead>
                             <tr>
+                                <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Rang</th>
                                 <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Joueur</th>
-                                <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Heure</th>
+                                <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Essais</th>
+                                <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Temps</th>
+                                <th style="text-align:left; border-bottom:1px solid #555; padding:4px 6px;">Score</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -209,11 +260,11 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         } catch (e) {
             console.error(e);
-            panel.innerHTML = `<strong>Gagnants du jour :</strong> Impossible de charger le classement.`;
+            panel.innerHTML = `<strong>Classement du jour :</strong> Impossible de charger le classement.`;
         }
     }
 
-    async function saveWinnerToSupabase(dateKey, playerName, attempts) {
+    async function saveWinnerToSupabase(dateKey, playerName, attempts, timeSeconds, score) {
         if (!SUPABASE_ANON_KEY) {
             console.warn('Supabase anon key manquante, gagnant non enregistré.');
             return null;
@@ -228,7 +279,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
                     Prefer: 'return=representation'
                 },
-                body: JSON.stringify({ date: dateKey, name: playerName, attempts })
+                body: JSON.stringify({
+                    date: dateKey,
+                    name: playerName,
+                    attempts,
+                    time_seconds: timeSeconds,
+                    score
+                })
             });
             if (!res.ok) {
                 console.error('Erreur Supabase insert', await res.text());
@@ -246,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const url =
                 `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}` +
-                `?date=eq.${encodeURIComponent(dateKey)}&select=id,created_at&order=created_at.asc`;
+                `?date=eq.${encodeURIComponent(dateKey)}&select=id,score,created_at&order=score.desc,created_at.asc`;
 
             const res = await fetch(url, {
                 headers: {
@@ -271,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     // 3bis. ÉCRAN DE FIN (victoire ou déjà joué) + FORMULAIRE NOM
     // ----------------------------------------------------
-    async function showEndScreen(dateKey, mode, attemptsForWin = null) {
+    async function showEndScreen(dateKey, mode, attemptsForWin = null, timeSecondsForWin = null, scoreForWin = null) {
         const boardEl = document.getElementById('board');
         const keyboardEl = document.getElementById('keyboard-container');
         if (boardEl) boardEl.style.display = 'none';
@@ -292,7 +349,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (mode === 'win') {
-                if (attemptsForWin != null) {
+                if (attemptsForWin != null && timeSecondsForWin != null && scoreForWin != null) {
+                    textP.textContent =
+                        `Bravo 🎉 Tu as trouvé le mot du jour en ${attemptsForWin} essai(s), ${timeSecondsForWin}s — Score : ${scoreForWin} pts`;
+                } else if (attemptsForWin != null && timeSecondsForWin != null) {
+                    textP.textContent = `Bravo 🎉 Tu as trouvé le mot du jour en ${attemptsForWin} essai(s) et ${timeSecondsForWin}s !`;
+                } else if (attemptsForWin != null) {
                     textP.textContent = `Bravo 🎉 Tu as trouvé le mot du jour en ${attemptsForWin} essai(s) !`;
                 } else {
                     textP.textContent = "Bravo 🎉 Tu as trouvé le mot du jour !";
@@ -346,7 +408,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
 
-                    const row = await saveWinnerToSupabase(dateKey, name, attemptsForWin);
+                    const row = await saveWinnerToSupabase(
+                        dateKey,
+                        name,
+                        attemptsForWin,
+                        timeSecondsForWin,
+                        scoreForWin
+                    );
 
                     let rankText = '';
                     if (row && row.id) {
@@ -357,12 +425,22 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
 
-                    if (attemptsForWin != null) {
+                    if (attemptsForWin != null && timeSecondsForWin != null && scoreForWin != null) {
+                        textP.textContent =
+                            `Bravo 🎉 Tu as trouvé le mot du jour en ${attemptsForWin} essai(s), ${timeSecondsForWin}s — Score : ${scoreForWin} pts` +
+                            (rankText || '');
+                    } else if (attemptsForWin != null && timeSecondsForWin != null) {
+                        textP.textContent =
+                            `Bravo 🎉 Tu as trouvé le mot du jour en ${attemptsForWin} essai(s) et ${timeSecondsForWin}s !` +
+                            (rankText || '');
+                    } else if (attemptsForWin != null) {
                         textP.textContent =
                             `Bravo 🎉 Tu as trouvé le mot du jour en ${attemptsForWin} essai(s) !` +
                             (rankText || '');
                     } else {
-                        textP.textContent = "Bravo 🎉 Tu as trouvé le mot du jour !" + (rankText || '');
+                        textP.textContent =
+                            "Bravo 🎉 Tu as trouvé le mot du jour !" +
+                            (rankText || '');
                     }
 
                     form.remove();
@@ -605,7 +683,14 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem(STORAGE_KEYS.LAST_DATE, today);
             localStorage.setItem(STORAGE_KEYS.HAS_WON_PREFIX + today, 'true');
 
-            showEndScreen(today, 'win', attempts);
+            let timeSeconds = null;
+            if (gameStartTime) {
+                timeSeconds = Math.floor((Date.now() - gameStartTime) / 1000);
+            }
+
+            const score = computeScore(attempts, timeSeconds ?? 0);
+
+            showEndScreen(today, 'win', attempts, timeSeconds, score);
 
         } else if (currentRow >= MAX_TRIES - 1) {
             showMessage(`Dommage ! Le mot était : ${solution}`, 3000);
@@ -646,6 +731,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (startScreen) startScreen.style.display = 'none';
         if (gameContainer) gameContainer.style.display = 'flex';
+
+        gameStartTime = Date.now();
 
         initGame();
         document.addEventListener('keydown', handleKeydown);
